@@ -1,0 +1,56 @@
+from PIL import Image
+import numpy as np
+
+def encrypt_image(image_path, shift, output_path):
+    
+    image = Image.open(image_path)
+    
+    data = np.array(image)
+    
+    
+    encrypted_data = (data + shift) % 256  
+    
+    
+    encrypted_image = Image.fromarray(encrypted_data.astype('uint8'))
+    encrypted_image.save(output_path)
+    print(f"Image encrypted and saved as {output_path}")
+
+def decrypt_image(image_path, shift, output_path):
+    
+    image = Image.open(image_path)
+    
+    data = np.array(image)
+    
+    
+    decrypted_data = (data - shift) % 256  
+    
+    
+    decrypted_image = Image.fromarray(decrypted_data.astype('uint8'))
+    decrypted_image.save(output_path)
+    print(f"Image decrypted and saved as {output_path}")
+
+def main():
+    print("Image Encryption Tool")
+    while True:
+        mode = input("Would you like to (E)ncrypt or (D)ecrypt an image? ").strip().lower()
+        if mode not in ['e', 'd']:
+            print("Invalid choice. Please enter 'E' for encrypt or 'D' for decrypt.")
+            continue
+        
+        image_path = input("Enter the path of the image file: ").strip()
+        shift = int(input("Enter the shift value (0-255): ").strip())
+        output_path = input("Enter the output path for the processed image: ").strip()
+        
+        if mode == 'e':
+            encrypt_image(image_path, shift, output_path)
+        else:
+            decrypt_image(image_path, shift, output_path)
+        
+        another = input("Would you like to perform another operation? (y/n): ").strip().lower()
+        if another != 'y':
+            break
+
+    print("Thank you for using the Image Encryption Tool. Goodbye!")
+
+if __name__ == "__main__":
+    main()
